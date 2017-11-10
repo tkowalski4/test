@@ -1,0 +1,107 @@
+
+#Naam:          Tim Kowalski
+#Klas:          BIN-1D
+#studentnummer: 561595
+
+
+def printer(ion_list):
+    i = 0
+    while i !> len(ion_list):
+	    print(ion_list[i])
+	    print("***************************************************************")
+	    i += 1
+	
+
+'''
+de functie ion_involved() krijgt de lijst mee in de parameter die eerder gemaakt is.
+Het neemt dezelfde stap als de functie not_validated() deed,
+maar voegt er een extra stap aan toe door ook te kijken of er ergens in andere
+rijen het woord "ion" voorkomt. Zo ja, dan zet het dit in lijst3 met de tekst "Ion = true"
+Zo nee, dan zet het dit in lijst3 met de tekst "Ion = false"
+aan het einde retourneert de functie lijst3 aan de variabele ion_list in de functie main()
+Lijst4 wordt alleen gebruikt om het totaal aantal ongeverivieerde genen dat iets met ionen doen
+te retourneren aan main()
+
+
+def ion_involved(lijst):
+    lijst3 = []
+    lijst4 = []
+    for row in lijst:
+        if row[1] == "Dubious" or row[1] == "Uncharacterized" and row[2:] == "ion":
+            lijst4.append(row[0])
+        if row[1] == "Dubious" or row[1] == "Uncharacterized" and row[2:] == "ion":
+            lijst3.append("Accessie code: " + row[0] + " \\\ Ion = True.")
+        if row[1] == "Dubious" or row[1] == "Uncharacterized" and not row[2:] == "ion":
+            lijst3.append("Accessie code: " + row[0] + " \\\ Ion = False.")
+    return lijst3, lijst4'''
+#Note: eerst was het de onderstaande code (in de groene comments), maar ik wist niet meer hoe ik de enters eruit moest halen, dus kwam het uiteindelijk nogal slordig (maar werkend) uit.
+
+
+def ion_involved(lijst):
+    lijst3 = []
+    lijst4 = []
+    for row in lijst:
+        if row[1] == "Dubious" and row[2:] == "ion":
+            lijst3.append(row[0], "True"), lijst4.append(row[0])
+	      elif row[1] == "Uncharacterized" and row[2:] == "ion":
+            lijst3.append(row[0], "True"), lijst4.append(row[0])
+	      else:
+            lijst3.append(row[0], "False")
+    return lijst3, lijst4
+
+'''
+De functie ion_involved() krijgt dezelfde lijst meegegeven in de parameter als de functie not_validated().
+de functie maakt eerst een nieuwe lege lijst aan (lijst3).
+Het kijkt na of er "Dubious" of "Uncharacterized" gevonden wordt in dezelfde rij als de functie not_validated
+EN of er in elke andere rij na de eerder genoemde rij het woord "ion" voorkomt.
+Wanneer het aan beide criteria voldoet zet de functie de accessiecode in de eerder gemaakte lijst.
+Aan het eind van de functie retourneert het lijst3 aan de variabele "ion_list" in de functie main().
+'''
+
+def not_validated(lijst):
+    lijst2 = []
+    for row in lijst:
+        if row[1] == "Dubious" or row[1] == "Uncharacterized":
+            lijst2.append(row[0])
+    return lijst2
+'''
+De functie not_validated() krijg een lijst meegevoerd in de parameter.
+De functie begint door een lege nieuwe lijst "lijst2" aan te maken.
+Het kijkt na of er "Dubious" of "Uncharacterized" gevonden wordt in de desbetreffende rij,
+zo ja dan zet hij de accessiecode in de eerder gemaakte lijst. Aan het einde retourneert de functie
+deze gemaakte lijst aan de variabele "unverified_list" in de main() functie.
+'''
+def read_file():
+    file = open("yeast_genes.csv", "r")
+    lijst = []
+    for line in file:
+        sublijst = line.split(",")
+        lijst.append(sublijst)
+    return lijst
+'''
+de functie read_file() opent het bestand, waarna het een lege variabele
+"lijst" aan maakt. Daarna maakt het een sublijst door alles op komma's
+te splitsen en gooit dit in de eerder gemaakte lege lijst. Aan het einde van de functie
+retourneert het de gemaakte lijst naar de variabele "lijst" in de main() functie.
+'''
+
+def main():
+    lijst = read_file()
+    #print(lijst[:10])
+    print("The total number of genes is:", len(lijst))
+    unverified_list = not_validated(lijst)
+    print("The number of unverified genes:", len(unverified_list))
+    #print(lijst2[:10])
+    ion_list, lijst4 = ion_involved(lijst)
+    print("The number of unverified genes involved in ion processes:", len(lijst4))
+    #print(ion_list)
+    printer(ion_list)
+'''
+De functie main() roept alle andere functies aan.
+Ook print het uiteindelijk het totale aantal genen,
+het aantal ongeverivieerde genen,
+het aantal ongeverivieerde genen dat ergens een ion proces heeft en
+het print ook ion_list uit wat laat de accessie code weergeeft met daarna of
+het wel of niet iets met ionen te maken heeft.
+'''
+main()
